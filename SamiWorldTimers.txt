@@ -1,0 +1,15 @@
+## Title: Sami's World Timers
+## Version: 1.0.0
+## APIVersion: 101048
+## IsLibrary: false
+## SavedVariables: SamiWorldTimersSettings
+## DependsOn: LibAddonMenu-2.0
+
+bindings.xml
+SamiWorldTimers.xml
+SamiWorldTimers.lua
+SamiWorldTimersUtil.lua
+SamiWorldTimersUI.lua
+SamiWorldTimersCore.lua
+SamiWorldTimersSettings.lua
+SamiWorldTimersEvents.lua
