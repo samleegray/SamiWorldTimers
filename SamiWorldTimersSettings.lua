@@ -14,6 +14,10 @@ function SamiWorldTimers.settingsInit()
 
     local optionsData = {}
     optionsData[#optionsData + 1] = {
+        type = "description",
+        text = "This addon automatically tracks overland world boss respawn timers. When a boss dies, a countdown timer will appear on your screen. You can also manually add a timer using the /samiwt command followed by an optional boss name (e.g., /samiwt or /samiwt Boss Name).",
+    }
+    optionsData[#optionsData + 1] = {
         type = "slider",
         name = "Timeout Duration",
         tooltip = "How long to keep a boss in the list after the timer ran out (Default: 8 seconds)",

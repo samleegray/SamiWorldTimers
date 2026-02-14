@@ -42,16 +42,5 @@ function util.rgbToHex(r, g, b)
 end
 
 function util.migrateSettings(settings)
-    if settings.OffsetX ~= nil then
-        settings.offsetX = settings.OffsetX
-        settings.OffsetX = nil
-    end
-    if settings.OffsetY ~= nil then
-        settings.offsetY = settings.OffsetY
-        settings.OffsetY = nil
-    end
-    if settings.TimeoutDuration ~= nil then
-        settings.timeoutDuration = settings.TimeoutDuration
-        settings.TimeoutDuration = nil
-    end
+    -- No migrations yet, but this is where you'd handle any changes to the settings structure in future versions
 end

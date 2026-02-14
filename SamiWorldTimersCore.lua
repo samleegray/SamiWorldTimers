@@ -85,6 +85,6 @@ end
 
 ZO_CreateStringId("SI_BINDING_NAME_SAMI_WORLD_TIMERS_MANUAL_BOSS", "Add boss timer manually")
 
-SLASH_COMMANDS["/swt"] = function(args)
+SLASH_COMMANDS["/samiwt"] = function(args)
     SamiWorldTimers.manualAdd(args)
 end
