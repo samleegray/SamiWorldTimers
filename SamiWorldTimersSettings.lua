@@ -63,6 +63,26 @@ function SamiWorldTimers.settingsInit()
     }
     optionsData[#optionsData + 1] = {
         type = "checkbox",
+        name = "Track Dragons (Elsweyr)",
+        tooltip = "Track dragon respawn timers in Northern and Southern Elsweyr",
+        getFunc = function() return SamiWorldTimers.settings.trackDragons end,
+        setFunc = function(value) SamiWorldTimers.settings.trackDragons = value end,
+        default = SamiWorldTimers.defaults.trackDragons,
+    }
+    optionsData[#optionsData + 1] = {
+        type = "slider",
+        name = "Dragon Respawn Time",
+        tooltip = "Respawn time in seconds for dragons (Default: 600 seconds)",
+        getFunc = function() return SamiWorldTimers.settings.dragonRespawnTime end,
+        setFunc = function(value) SamiWorldTimers.settings.dragonRespawnTime = value end,
+        min = 60,
+        max = 1800,
+        step = 30,
+        default = SamiWorldTimers.defaults.dragonRespawnTime,
+        disabled = function() return not SamiWorldTimers.settings.trackDragons end,
+    }
+    optionsData[#optionsData + 1] = {
+        type = "checkbox",
         name = "Wipe Timers on Zone Change",
         tooltip = "Clear all tracked timers when changing zones",
         getFunc = function() return SamiWorldTimers.settings.wipeOnZoneChange end,

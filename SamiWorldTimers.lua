@@ -14,6 +14,8 @@ SamiWorldTimers.defaults = {
     alertDuration = 15,
     warningColour = "FFAA00",
     alertColour = "FF0000",
+    trackDragons = true,
+    dragonRespawnTime = 600,
     wipeOnZoneChange = false,
     debug = false,
 }
@@ -41,6 +43,10 @@ SamiWorldTimers.blacklist = {
     "Shrakkaher",
     "Rrarrvok",
     "Krrazzak"
+}
+SamiWorldTimers.dragonZones = {
+    1086, -- Northern Elsweyr
+    1133, -- Southern Elsweyr
 }
 SamiWorldTimers.sortedBosses = {}
 SamiWorldTimers.sortedDirty = true
