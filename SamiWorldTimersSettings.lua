@@ -204,5 +204,6 @@ function SamiWorldTimers.settingsInit()
         disabled = true,
         reference = "SamiWorldTimers_HideMePls",
     }
+    
     LAM2:RegisterOptionControls("SamiWorldTimersOptions", optionsData)
 end
