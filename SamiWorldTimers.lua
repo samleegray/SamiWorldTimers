@@ -14,8 +14,12 @@ SamiWorldTimers.defaults = {
     alertDuration = 15,
     warningColour = "FFAA00",
     alertColour = "FF0000",
+    defaultTextColour = "FFFFFF",
     wipeOnZoneChange = false,
     debug = false,
+    backgroundColor = "000000",
+    backgroundOpacity = 0.8,
+    showTitle = true,
 }
 
 SamiWorldTimers.bossTimes = {}

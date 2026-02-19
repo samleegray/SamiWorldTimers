@@ -1,6 +1,7 @@
 SamiWorldTimers.ui = SamiWorldTimers.ui or {}
 
 local ui = SamiWorldTimers.ui
+local util = SamiWorldTimers.util
 
 function ui.init()
     if not ui.mainFragment then
@@ -37,10 +38,18 @@ function ui.init()
     SamiWorldTimersTLCLabel:ClearAnchors()
     SamiWorldTimersTLCLabel:SetAnchor(TOPLEFT, SamiWorldTimersTLC, TOPLEFT, 8, 20)
     
+    -- Set default text color
+    local r, g, b = util.hexToRgb(SamiWorldTimers.settings.defaultTextColour)
+    SamiWorldTimersTLCLabel:SetColor(r, g, b)
+    
     -- Set up the background
     local bg = SamiWorldTimersTLCBackground
-    bg:SetColor(0, 0, 0, 0.8)
+    local r, g, b = util.hexToRgb(SamiWorldTimers.settings.backgroundColor)
+    bg:SetColor(r, g, b, SamiWorldTimers.settings.backgroundOpacity)
     bg:SetHidden(false)
+    
+    -- Set title visibility
+    ui.updateTitleVisibility()
 end
 
 function ui.setText(text)
@@ -75,4 +84,34 @@ end
 function SamiWorldTimers.savePosition()
     SamiWorldTimers.settings.offsetX = SamiWorldTimersTLC:GetLeft()
     SamiWorldTimers.settings.offsetY = SamiWorldTimersTLC:GetTop()
+end
+
+function ui.updateBackgroundColor()
+    local bg = SamiWorldTimersTLCBackground
+    if bg then
+        local r, g, b = util.hexToRgb(SamiWorldTimers.settings.backgroundColor)
+        bg:SetColor(r, g, b, SamiWorldTimers.settings.backgroundOpacity)
+    end
+end
+
+function ui.updateBackgroundOpacity()
+    local bg = SamiWorldTimersTLCBackground
+    if bg then
+        local r, g, b = util.hexToRgb(SamiWorldTimers.settings.backgroundColor)
+        bg:SetColor(r, g, b, SamiWorldTimers.settings.backgroundOpacity)
+    end
+end
+
+function ui.updateTextColors()
+    -- Refresh the timers to apply any color changes
+    local r, g, b = util.hexToRgb(SamiWorldTimers.settings.defaultTextColour)
+    SamiWorldTimersTLCLabel:SetColor(r, g, b)
+    SamiWorldTimers.updateTimer()
+end
+
+function ui.updateTitleVisibility()
+    local title = SamiWorldTimersTLCTitle
+    if title then
+        title:SetHidden(not SamiWorldTimers.settings.showTitle)
+    end
 end

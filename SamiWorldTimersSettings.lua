@@ -52,14 +52,30 @@ function SamiWorldTimers.settingsInit()
         name = "Warning Color",
         tooltip = "Color used for warning timers",
         getFunc = function() return util.hexToRgb(SamiWorldTimers.settings.warningColour) end,
-        setFunc = function(r, g, b) SamiWorldTimers.settings.warningColour = util.rgbToHex(r, g, b) end,
+        setFunc = function(r, g, b) 
+            SamiWorldTimers.settings.warningColour = util.rgbToHex(r, g, b)
+            SamiWorldTimers.ui.updateTextColors()
+        end,
     }
     optionsData[#optionsData + 1] = {
         type = "colorpicker",
         name = "Alert Color",
         tooltip = "Color used for alert timers",
         getFunc = function() return util.hexToRgb(SamiWorldTimers.settings.alertColour) end,
-        setFunc = function(r, g, b) SamiWorldTimers.settings.alertColour = util.rgbToHex(r, g, b) end,
+        setFunc = function(r, g, b) 
+            SamiWorldTimers.settings.alertColour = util.rgbToHex(r, g, b)
+            SamiWorldTimers.ui.updateTextColors()
+        end,
+    }
+    optionsData[#optionsData + 1] = {
+        type = "colorpicker",
+        name = "Default Text Color",
+        tooltip = "Default color for timer text",
+        getFunc = function() return util.hexToRgb(SamiWorldTimers.settings.defaultTextColour) end,
+        setFunc = function(r, g, b) 
+            SamiWorldTimers.settings.defaultTextColour = util.rgbToHex(r, g, b)
+            SamiWorldTimers.ui.updateTextColors()
+        end,
     }
     optionsData[#optionsData + 1] = {
         type = "checkbox",
@@ -76,6 +92,40 @@ function SamiWorldTimers.settingsInit()
         getFunc = function() return SamiWorldTimers.settings.debug end,
         setFunc = function(value) SamiWorldTimers.settings.debug = value end,
         default = SamiWorldTimers.defaults.debug,
+    }
+    optionsData[#optionsData + 1] = {
+        type = "colorpicker",
+        name = "Background Color",
+        tooltip = "Color of the background behind timers",
+        getFunc = function() return util.hexToRgb(SamiWorldTimers.settings.backgroundColor) end,
+        setFunc = function(r, g, b) 
+            SamiWorldTimers.settings.backgroundColor = util.rgbToHex(r, g, b)
+            SamiWorldTimers.ui.updateBackgroundColor()
+        end,
+    }
+    optionsData[#optionsData + 1] = {
+        type = "slider",
+        name = "Background Opacity",
+        tooltip = "Opacity of the background (0 = transparent, 1 = opaque)",
+        getFunc = function() return SamiWorldTimers.settings.backgroundOpacity end,
+        setFunc = function(value) 
+            SamiWorldTimers.settings.backgroundOpacity = value
+            SamiWorldTimers.ui.updateBackgroundOpacity()
+        end,
+        min = 0,
+        max = 1,
+        step = 0.05,
+    }
+    optionsData[#optionsData + 1] = {
+        type = "checkbox",
+        name = "Show Title",
+        tooltip = "Show or hide the 'Boss Timers' title text",
+        getFunc = function() return SamiWorldTimers.settings.showTitle end,
+        setFunc = function(value) 
+            SamiWorldTimers.settings.showTitle = value
+            SamiWorldTimers.ui.updateTitleVisibility()
+        end,
+        default = SamiWorldTimers.defaults.showTitle,
     }
     LAM2:RegisterOptionControls("SamiWorldTimersOptions", optionsData)
 end
