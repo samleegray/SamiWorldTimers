@@ -1,6 +1,28 @@
 local LAM2 = LibAddonMenu2
 local util = SamiWorldTimers.util
 
+local function makeGuildDescription()
+    local guildTitle = WINDOW_MANAGER:CreateControl("SamiWorldTimersGuildLogoTitle", 
+        SamiWorldTimersGuildLogo, CT_LABEL)
+    guildTitle:SetFont("$(BOLD_FONT)|$(KB_18)|soft-shadow-thin")
+    guildTitle:SetText("|cf939daLETHAL REJECTION")
+    guildTitle:SetDimensions(240, 31)
+    guildTitle:SetHorizontalAlignment(1)
+    guildTitle:SetAnchor(TOP, SamiWorldTimersGuildLogo, BOTTOM, 0, 40)
+    SamiWorldTimersGuildLogoTitle = guildTitle
+    
+    local guildLabel = WINDOW_MANAGER:CreateControl("SamiWorldTimersGuildLogoLabel", 
+        SamiWorldTimersGuildLogoTitle, CT_LABEL)
+    guildLabel:SetFont("$(MEDIUM_FONT)|$(KB_16)|soft-shadow-thick")
+    guildLabel:SetText("|C646464PC NA")
+    guildLabel:SetDimensions(240, 21)
+    guildLabel:SetHorizontalAlignment(1)
+    guildLabel:SetAnchor(TOP, SamiWorldTimersGuildLogoTitle, BOTTOM, 0, -5)
+    SamiWorldTimersGuildLogoLabel = guildLabel
+
+    SamiWorldTimers_HideMePls:SetHidden(true)
+end
+
 function SamiWorldTimers.settingsInit()
     local panelData = {
         type = "panel",
@@ -156,6 +178,31 @@ function SamiWorldTimers.settingsInit()
         getFunc = function() return SamiWorldTimers.settings.debug end,
         setFunc = function(value) SamiWorldTimers.settings.debug = value end,
         default = SamiWorldTimers.defaults.debug,
+    }
+
+    -- Guild Information
+    optionsData[ #optionsData + 1 ] = {
+        type = "texture",
+        image = "SamiWorldTimers/samis-logo.dds",
+        imageWidth = "192",
+        imageHeight = "192",
+        reference = "SamiWorldTimersGuildLogo"
+    }
+    optionsData[#optionsData + 1] = {
+        type = "checkbox",
+        name = "HideMePls",
+        getFunc = function()
+            if SamiWorldTimersGuildLogo ~= nil then
+                makeGuildDescription()
+            end
+            return false
+        end,
+        setFunc = function(value)
+            return false
+        end,
+        default = false,
+        disabled = true,
+        reference = "SamiWorldTimers_HideMePls",
     }
     LAM2:RegisterOptionControls("SamiWorldTimersOptions", optionsData)
 end
