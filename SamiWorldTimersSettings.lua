@@ -17,6 +17,12 @@ function SamiWorldTimers.settingsInit()
         type = "description",
         text = "This addon automatically tracks overland world boss respawn timers. When a boss dies, a countdown timer will appear on your screen. You can also manually add a timer using the /samiwt command followed by an optional boss name (e.g., /samiwt or /samiwt Boss Name).",
     }
+
+    -- Timer Options
+    optionsData[#optionsData + 1] = {
+        type = "header",
+        name = "Timer Options",
+    }
     optionsData[#optionsData + 1] = {
         type = "slider",
         name = "Timeout Duration",
@@ -47,6 +53,22 @@ function SamiWorldTimers.settingsInit()
         max = 120,
         step = 1,
     }
+
+    -- Color Options
+    optionsData[#optionsData + 1] = {
+        type = "header",
+        name = "Color Options",
+    }
+    optionsData[#optionsData + 1] = {
+        type = "colorpicker",
+        name = "Default Text Color",
+        tooltip = "Default color for timer text",
+        getFunc = function() return util.hexToRgb(SamiWorldTimers.settings.defaultTextColour) end,
+        setFunc = function(r, g, b) 
+            SamiWorldTimers.settings.defaultTextColour = util.rgbToHex(r, g, b)
+            SamiWorldTimers.ui.updateTextColors()
+        end,
+    }
     optionsData[#optionsData + 1] = {
         type = "colorpicker",
         name = "Warning Color",
@@ -67,31 +89,11 @@ function SamiWorldTimers.settingsInit()
             SamiWorldTimers.ui.updateTextColors()
         end,
     }
+
+    -- Background Options
     optionsData[#optionsData + 1] = {
-        type = "colorpicker",
-        name = "Default Text Color",
-        tooltip = "Default color for timer text",
-        getFunc = function() return util.hexToRgb(SamiWorldTimers.settings.defaultTextColour) end,
-        setFunc = function(r, g, b) 
-            SamiWorldTimers.settings.defaultTextColour = util.rgbToHex(r, g, b)
-            SamiWorldTimers.ui.updateTextColors()
-        end,
-    }
-    optionsData[#optionsData + 1] = {
-        type = "checkbox",
-        name = "Wipe Timers on Zone Change",
-        tooltip = "Clear all tracked timers when changing zones",
-        getFunc = function() return SamiWorldTimers.settings.wipeOnZoneChange end,
-        setFunc = function(value) SamiWorldTimers.settings.wipeOnZoneChange = value end,
-        default = SamiWorldTimers.defaults.wipeOnZoneChange,
-    }
-    optionsData[#optionsData + 1] = {
-        type = "checkbox",
-        name = "Debug",
-        tooltip = "Enable debug output in chat",
-        getFunc = function() return SamiWorldTimers.settings.debug end,
-        setFunc = function(value) SamiWorldTimers.settings.debug = value end,
-        default = SamiWorldTimers.defaults.debug,
+        type = "header",
+        name = "Background Options",
     }
     optionsData[#optionsData + 1] = {
         type = "colorpicker",
@@ -116,6 +118,12 @@ function SamiWorldTimers.settingsInit()
         max = 1,
         step = 0.05,
     }
+
+    -- Display Options
+    optionsData[#optionsData + 1] = {
+        type = "header",
+        name = "Display Options",
+    }
     optionsData[#optionsData + 1] = {
         type = "checkbox",
         name = "Show Title",
@@ -126,6 +134,28 @@ function SamiWorldTimers.settingsInit()
             SamiWorldTimers.ui.updateTitleVisibility()
         end,
         default = SamiWorldTimers.defaults.showTitle,
+    }
+    optionsData[#optionsData + 1] = {
+        type = "checkbox",
+        name = "Wipe Timers on Zone Change",
+        tooltip = "Clear all tracked timers when changing zones",
+        getFunc = function() return SamiWorldTimers.settings.wipeOnZoneChange end,
+        setFunc = function(value) SamiWorldTimers.settings.wipeOnZoneChange = value end,
+        default = SamiWorldTimers.defaults.wipeOnZoneChange,
+    }
+
+    -- Debug Options
+    optionsData[#optionsData + 1] = {
+        type = "header",
+        name = "Debug",
+    }
+    optionsData[#optionsData + 1] = {
+        type = "checkbox",
+        name = "Debug",
+        tooltip = "Enable debug output in chat",
+        getFunc = function() return SamiWorldTimers.settings.debug end,
+        setFunc = function(value) SamiWorldTimers.settings.debug = value end,
+        default = SamiWorldTimers.defaults.debug,
     }
     LAM2:RegisterOptionControls("SamiWorldTimersOptions", optionsData)
 end
