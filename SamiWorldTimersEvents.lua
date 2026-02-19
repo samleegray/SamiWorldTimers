@@ -2,27 +2,6 @@ local util = SamiWorldTimers.util
 
 local currentZoneId = nil
 
-local function onZoneChanged(initial)
-    if not SamiWorldTimers.settings.wipeOnZoneChange then return end
-
-    local newZoneId = util.getCurrentZoneId()
-    
-    if currentZoneId ~= nil and currentZoneId ~= newZoneId then
-        -- Clear all timers
-        SamiWorldTimers.bossTimes = {}
-        SamiWorldTimers.sortedBosses = {}
-        SamiWorldTimers.sortedDirty = true
-        SamiWorldTimers.ui.setText("")
-        EVENT_MANAGER:UnregisterForUpdate(SamiWorldTimers.name .. "Boss Tracker")
-        
-        if SamiWorldTimers.settings.debug then
-            d(string.format("[SamiWorldTimers] Zone changed from %s to %s, timers wiped", tostring(currentZoneId), tostring(newZoneId)))
-        end
-    end
-    
-    currentZoneId = newZoneId
-end
-
 local function onUnitDeath(event, uTag, isDead)
     if not isDead then return end
     if not uTag or uTag == "" then return end
@@ -42,6 +21,39 @@ local function onUnitDeath(event, uTag, isDead)
     end
 
     SamiWorldTimers.addTimer(bossName, respawnTime)
+end
+
+local function onZoneChanged(initial)
+    local newZoneId = util.getCurrentZoneId()
+
+    if GetCurrentZoneDungeonDifficulty() ~= 0 then
+        if SamiWorldTimers.settings.debug then
+            d(string.format("Unregistering Death event..."))
+        end
+        EVENT_MANAGER:UnregisterForEvent(SamiWorldTimers.name .. "Death", EVENT_UNIT_DEATH_STATE_CHANGED)
+    else
+        if SamiWorldTimers.settings.debug then
+            d(string.format("Registering Death event..."))
+        end
+        EVENT_MANAGER:RegisterForEvent(SamiWorldTimers.name .. "Death", EVENT_UNIT_DEATH_STATE_CHANGED, onUnitDeath)
+    end
+
+    if not SamiWorldTimers.settings.wipeOnZoneChange then return end
+    
+    if currentZoneId ~= nil and currentZoneId ~= newZoneId then
+        -- Clear all timers
+        SamiWorldTimers.bossTimes = {}
+        SamiWorldTimers.sortedBosses = {}
+        SamiWorldTimers.sortedDirty = true
+        SamiWorldTimers.ui.setText("")
+        EVENT_MANAGER:UnregisterForUpdate(SamiWorldTimers.name .. "Boss Tracker")
+        
+        if SamiWorldTimers.settings.debug then
+            d(string.format("[SamiWorldTimers] Zone changed from %s to %s, timers wiped", tostring(currentZoneId), tostring(newZoneId)))
+        end
+    end
+    
+    currentZoneId = newZoneId
 end
 
 local function onAddOnLoaded(event, addonName)
