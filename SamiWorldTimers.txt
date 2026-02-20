@@ -4,7 +4,7 @@
 ## AddOnVersion: 2
 ## Author: |cf939dasamihaize|r
 ## SavedVariables: SamiWorldTimersSettings
-## DependsOn: LibAddonMenu-2.0>=39
+## DependsOn: LibAddonMenu-2.0>=41
 
 bindings.xml
 SamiWorldTimers.xml

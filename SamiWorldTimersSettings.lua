@@ -1,5 +1,6 @@
 local LAM2 = LibAddonMenu2
 local util = SamiWorldTimers.util
+local ui = SamiWorldTimers.ui
 
 local function makeGuildDescription()
     local guildTitle = WINDOW_MANAGER:CreateControl("SamiWorldTimersGuildLogoTitle", 
@@ -9,18 +10,18 @@ local function makeGuildDescription()
     guildTitle:SetDimensions(240, 31)
     guildTitle:SetHorizontalAlignment(1)
     guildTitle:SetAnchor(TOP, SamiWorldTimersGuildLogo, BOTTOM, 0, 40)
-    SamiWorldTimersGuildLogoTitle = guildTitle
+    ui.guildTitle = guildTitle
     
     local guildLabel = WINDOW_MANAGER:CreateControl("SamiWorldTimersGuildLogoLabel", 
-        SamiWorldTimersGuildLogoTitle, CT_LABEL)
+        guildTitle, CT_LABEL)
     guildLabel:SetFont("$(MEDIUM_FONT)|$(KB_16)|soft-shadow-thick")
     guildLabel:SetText("|C646464PC NA")
     guildLabel:SetDimensions(240, 21)
     guildLabel:SetHorizontalAlignment(1)
-    guildLabel:SetAnchor(TOP, SamiWorldTimersGuildLogoTitle, BOTTOM, 0, -5)
-    SamiWorldTimersGuildLogoLabel = guildLabel
+    guildLabel:SetAnchor(TOP, guildTitle, BOTTOM, 0, -5)
+    ui.guildLabel = guildLabel
 
-    SamiWorldTimers_HideMePls:SetHidden(true)
+    ui.hideMePls:SetHidden(true)
 end
 
 function SamiWorldTimers.settingsInit()
@@ -202,7 +203,7 @@ function SamiWorldTimers.settingsInit()
         end,
         default = false,
         disabled = true,
-        reference = "SamiWorldTimers_HideMePls",
+        reference = "SamiWorldTimersUI_HideMePls",
     }
     
     LAM2:RegisterOptionControls("SamiWorldTimersOptions", optionsData)

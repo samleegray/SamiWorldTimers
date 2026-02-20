@@ -16,22 +16,22 @@ function ui.init()
         SamiWorldTimers.settings.offsetY)
     
     -- Create background if it doesn't exist
-    if not SamiWorldTimersTLCBackground then
+    if not ui.background then
         local bg = WINDOW_MANAGER:CreateControl("SamiWorldTimersTLCBackground", SamiWorldTimersTLC, CT_TEXTURE)
         bg:SetDimensions(200, 100)
         bg:SetAnchor(TOPLEFT, SamiWorldTimersTLC, TOPLEFT, 0, 0)
         bg:SetDrawLevel(-1)
-        SamiWorldTimersTLCBackground = bg
+        ui.background = bg
     end
     
     -- Create title if it doesn't exist
-    if not SamiWorldTimersTLCTitle then
+    if not ui.title then
         local title = WINDOW_MANAGER:CreateControl("SamiWorldTimersTLCTitle", SamiWorldTimersTLC, CT_LABEL)
         title:SetFont("ZoFontWinH5")
         title:SetColor(1, 1, 1)
         title:SetText("Boss Timers")
         title:SetAnchor(TOP, SamiWorldTimersTLC, TOP, 0, 2)
-        SamiWorldTimersTLCTitle = title
+        ui.title = title
     end
     
     -- Adjust label to position below title
@@ -43,7 +43,7 @@ function ui.init()
     SamiWorldTimersTLCLabel:SetColor(r, g, b)
     
     -- Set up the background
-    local bg = SamiWorldTimersTLCBackground
+    local bg = ui.background
     local r, g, b = util.hexToRgb(SamiWorldTimers.settings.backgroundColor)
     bg:SetColor(r, g, b, SamiWorldTimers.settings.backgroundOpacity)
     bg:SetHidden(false)
@@ -70,14 +70,14 @@ function ui.setText(text)
     width = width + 16
     height = height + 8
     
-    local bg = SamiWorldTimersTLCBackground
+    local bg = ui.background
     bg:SetDimensions(width, height)
     
     -- Recenter title after resizing
-    local title = SamiWorldTimersTLCTitle
+    local title = ui.title
     if title then
         title:ClearAnchors()
-        title:SetAnchor(TOP, SamiWorldTimersTLCBackground, TOP, 0, 2)
+        title:SetAnchor(TOP, ui.background, TOP, 0, 2)
     end
 end
 
@@ -87,7 +87,7 @@ function SamiWorldTimers.savePosition()
 end
 
 function ui.updateBackgroundColor()
-    local bg = SamiWorldTimersTLCBackground
+    local bg = ui.background
     if bg then
         local r, g, b = util.hexToRgb(SamiWorldTimers.settings.backgroundColor)
         bg:SetColor(r, g, b, SamiWorldTimers.settings.backgroundOpacity)
@@ -95,7 +95,7 @@ function ui.updateBackgroundColor()
 end
 
 function ui.updateBackgroundOpacity()
-    local bg = SamiWorldTimersTLCBackground
+    local bg = ui.background
     if bg then
         local r, g, b = util.hexToRgb(SamiWorldTimers.settings.backgroundColor)
         bg:SetColor(r, g, b, SamiWorldTimers.settings.backgroundOpacity)
@@ -110,7 +110,7 @@ function ui.updateTextColors()
 end
 
 function ui.updateTitleVisibility()
-    local title = SamiWorldTimersTLCTitle
+    local title = ui.title
     if title then
         title:SetHidden(not SamiWorldTimers.settings.showTitle)
     end
