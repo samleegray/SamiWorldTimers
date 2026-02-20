@@ -1,6 +1,8 @@
-SamiWorldTimers.util = SamiWorldTimers.util or {}
+local SWT = SamiWorldTimers
 
-local util = SamiWorldTimers.util
+SWT.util = SWT.util or {}
+
+local util = SWT.util
 
 function util.colorText(text, hex)
     return "|c" .. hex .. text .. "|r"

@@ -1,4 +1,5 @@
-local util = SamiWorldTimers.util
+local SWT = SamiWorldTimers
+local util = SWT.util
 
 local currentZoneId = nil
 
@@ -10,49 +11,49 @@ local function onUnitDeath(event, uTag, isDead)
 
     local bossName = GetUnitName(uTag)
     if not bossName or bossName == "" then return end
-    if util.tableContains(SamiWorldTimers.blacklist, bossName) then return end
+    if util.tableContains(SWT.blacklist, bossName) then return end
 
     local respawnTime = 300
     if util.getCurrentZoneId() == 1133 then respawnTime = 600 end
     if uTag ~= "boss1" then return end
 
-    if SamiWorldTimers.settings.debug then
+    if SWT.settings.debug then
         d(string.format("[SamiWorldTimers] UnitDeathCallback: event=%s tag=%s isDead=%s", tostring(event), tostring(uTag), tostring(isDead)))
     end
 
-    SamiWorldTimers.addTimer(bossName, respawnTime)
+    SWT.addTimer(bossName, respawnTime)
 end
 
 local function updateDeathEventState()
     local inDungeonOrTrial = GetCurrentZoneDungeonDifficulty() ~= 0
     
     if inDungeonOrTrial then
-        if SamiWorldTimers.settings.debug then
+        if SWT.settings.debug then
             d(string.format("Unregistering Death event..."))
         end
-        EVENT_MANAGER:UnregisterForEvent(SamiWorldTimers.name .. "Death", EVENT_UNIT_DEATH_STATE_CHANGED)
+        EVENT_MANAGER:UnregisterForEvent(SWT.name .. "Death", EVENT_UNIT_DEATH_STATE_CHANGED)
         SamiWorldTimersTLC:SetHidden(true)
     else
-        if SamiWorldTimers.settings.debug then
+        if SWT.settings.debug then
             d(string.format("Registering Death event..."))
         end
-        EVENT_MANAGER:RegisterForEvent(SamiWorldTimers.name .. "Death", EVENT_UNIT_DEATH_STATE_CHANGED, onUnitDeath)
+        EVENT_MANAGER:RegisterForEvent(SWT.name .. "Death", EVENT_UNIT_DEATH_STATE_CHANGED, onUnitDeath)
         SamiWorldTimersTLC:SetHidden(false)
     end
 end
 
 local function wipeTimersOnZoneChange(oldZoneId, newZoneId)
-    if not SamiWorldTimers.settings.wipeOnZoneChange then return end
+    if not SWT.settings.wipeOnZoneChange then return end
     
     if oldZoneId ~= nil and oldZoneId ~= newZoneId then
         -- Clear all timers
-        SamiWorldTimers.bossTimes = {}
-        SamiWorldTimers.sortedBosses = {}
-        SamiWorldTimers.sortedDirty = true
-        SamiWorldTimers.ui.setText("")
-        EVENT_MANAGER:UnregisterForUpdate(SamiWorldTimers.name .. "Boss Tracker")
+        SWT.bossTimes = {}
+        SWT.sortedBosses = {}
+        SWT.sortedDirty = true
+        SWT.ui.setText("")
+        EVENT_MANAGER:UnregisterForUpdate(SWT.name .. "Boss Tracker")
         
-        if SamiWorldTimers.settings.debug then
+        if SWT.settings.debug then
             d(string.format("[SamiWorldTimers] Zone changed from %s to %s, timers wiped", tostring(oldZoneId), tostring(newZoneId)))
         end
     end
@@ -68,20 +69,20 @@ local function onZoneChanged(initial)
 end
 
 local function onAddOnLoaded(event, addonName)
-    if addonName ~= SamiWorldTimers.name then return end
-    EVENT_MANAGER:UnregisterForEvent(SamiWorldTimers.name, EVENT_ADD_ON_LOADED)
+    if addonName ~= SWT.name then return end
+    EVENT_MANAGER:UnregisterForEvent(SWT.name, EVENT_ADD_ON_LOADED)
 
-    SamiWorldTimers.settings = ZO_SavedVars:NewAccountWide(SamiWorldTimers.name .. "Settings", 1, nil, SamiWorldTimers.defaults)
-    util.migrateSettings(SamiWorldTimers.settings)
+    SWT.settings = ZO_SavedVars:NewAccountWide(SWT.name .. "Settings", 1, nil, SWT.defaults)
+    util.migrateSettings(SWT.settings)
 
     -- Initialize current zone
     currentZoneId = util.getCurrentZoneId()
 
-    SamiWorldTimers.settingsInit()
-    SamiWorldTimers.ui.init()
+    SWT.settingsInit()
+    SWT.ui.init()
 
     updateDeathEventState()
-    EVENT_MANAGER:RegisterForEvent(SamiWorldTimers.name .. "ZoneChange", EVENT_PLAYER_ACTIVATED, onZoneChanged)
+    EVENT_MANAGER:RegisterForEvent(SWT.name .. "ZoneChange", EVENT_PLAYER_ACTIVATED, onZoneChanged)
 end
 
-EVENT_MANAGER:RegisterForEvent(SamiWorldTimers.name, EVENT_ADD_ON_LOADED, onAddOnLoaded)
+EVENT_MANAGER:RegisterForEvent(SWT.name, EVENT_ADD_ON_LOADED, onAddOnLoaded)

@@ -1,6 +1,7 @@
 local LAM2 = LibAddonMenu2
-local util = SamiWorldTimers.util
-local ui = SamiWorldTimers.ui
+local SWT = SamiWorldTimers
+local util = SWT.util
+local ui = SWT.ui
 
 local function makeGuildDescription()
     local guildTitle = WINDOW_MANAGER:CreateControl("SamiWorldTimersGuildLogoTitle", 
@@ -24,12 +25,12 @@ local function makeGuildDescription()
     ui.hideMePls:SetHidden(true)
 end
 
-function SamiWorldTimers.settingsInit()
+function SWT.settingsInit()
     local panelData = {
         type = "panel",
         name = "Sami's World Timers",
         author = "@|cf500e2s|r|ceb00e5a|r|ce100e9m|r|cd700edi|r|cce00f0h|r|cc400f4a|r|cba00f8i|r|cb000fbz|r|ca600ffe|r",
-        version = SamiWorldTimers.version,
+        version = SWT.version,
         website = "https://lethalrejection.com"
     }
 
@@ -50,8 +51,8 @@ function SamiWorldTimers.settingsInit()
         type = "slider",
         name = "Timeout Duration",
         tooltip = "How long to keep a boss in the list after the timer ran out (Default: 8 seconds)",
-        getFunc = function() return SamiWorldTimers.settings.timeoutDuration end,
-        setFunc = function(value) SamiWorldTimers.settings.timeoutDuration = value end,
+        getFunc = function() return SWT.settings.timeoutDuration end,
+        setFunc = function(value) SWT.settings.timeoutDuration = value end,
         min = 0,
         max = 60,
         step = 1,
@@ -60,8 +61,8 @@ function SamiWorldTimers.settingsInit()
         type = "slider",
         name = "Warning Duration",
         tooltip = "When remaining time is below this, use the warning color (Default: 60 seconds)",
-        getFunc = function() return SamiWorldTimers.settings.warningDuration end,
-        setFunc = function(value) SamiWorldTimers.settings.warningDuration = value end,
+        getFunc = function() return SWT.settings.warningDuration end,
+        setFunc = function(value) SWT.settings.warningDuration = value end,
         min = 1,
         max = 300,
         step = 1,
@@ -70,8 +71,8 @@ function SamiWorldTimers.settingsInit()
         type = "slider",
         name = "Alert Duration",
         tooltip = "When remaining time is below this, use the alert color (Default: 15 seconds)",
-        getFunc = function() return SamiWorldTimers.settings.alertDuration end,
-        setFunc = function(value) SamiWorldTimers.settings.alertDuration = value end,
+        getFunc = function() return SWT.settings.alertDuration end,
+        setFunc = function(value) SWT.settings.alertDuration = value end,
         min = 1,
         max = 120,
         step = 1,
@@ -86,30 +87,30 @@ function SamiWorldTimers.settingsInit()
         type = "colorpicker",
         name = "Default Text Color",
         tooltip = "Default color for timer text",
-        getFunc = function() return util.hexToRgb(SamiWorldTimers.settings.defaultTextColour) end,
+        getFunc = function() return util.hexToRgb(SWT.settings.defaultTextColour) end,
         setFunc = function(r, g, b) 
-            SamiWorldTimers.settings.defaultTextColour = util.rgbToHex(r, g, b)
-            SamiWorldTimers.ui.updateTextColors()
+            SWT.settings.defaultTextColour = util.rgbToHex(r, g, b)
+            SWT.ui.updateTextColors()
         end,
     }
     optionsData[#optionsData + 1] = {
         type = "colorpicker",
         name = "Warning Color",
         tooltip = "Color used for warning timers",
-        getFunc = function() return util.hexToRgb(SamiWorldTimers.settings.warningColour) end,
+        getFunc = function() return util.hexToRgb(SWT.settings.warningColour) end,
         setFunc = function(r, g, b) 
-            SamiWorldTimers.settings.warningColour = util.rgbToHex(r, g, b)
-            SamiWorldTimers.ui.updateTextColors()
+            SWT.settings.warningColour = util.rgbToHex(r, g, b)
+            SWT.ui.updateTextColors()
         end,
     }
     optionsData[#optionsData + 1] = {
         type = "colorpicker",
         name = "Alert Color",
         tooltip = "Color used for alert timers",
-        getFunc = function() return util.hexToRgb(SamiWorldTimers.settings.alertColour) end,
+        getFunc = function() return util.hexToRgb(SWT.settings.alertColour) end,
         setFunc = function(r, g, b) 
-            SamiWorldTimers.settings.alertColour = util.rgbToHex(r, g, b)
-            SamiWorldTimers.ui.updateTextColors()
+            SWT.settings.alertColour = util.rgbToHex(r, g, b)
+            SWT.ui.updateTextColors()
         end,
     }
 
@@ -122,20 +123,20 @@ function SamiWorldTimers.settingsInit()
         type = "colorpicker",
         name = "Background Color",
         tooltip = "Color of the background behind timers",
-        getFunc = function() return util.hexToRgb(SamiWorldTimers.settings.backgroundColor) end,
+        getFunc = function() return util.hexToRgb(SWT.settings.backgroundColor) end,
         setFunc = function(r, g, b) 
-            SamiWorldTimers.settings.backgroundColor = util.rgbToHex(r, g, b)
-            SamiWorldTimers.ui.updateBackgroundColor()
+            SWT.settings.backgroundColor = util.rgbToHex(r, g, b)
+            SWT.ui.updateBackgroundColor()
         end,
     }
     optionsData[#optionsData + 1] = {
         type = "slider",
         name = "Background Opacity",
         tooltip = "Opacity of the background (0 = transparent, 1 = opaque)",
-        getFunc = function() return SamiWorldTimers.settings.backgroundOpacity end,
+        getFunc = function() return SWT.settings.backgroundOpacity end,
         setFunc = function(value) 
-            SamiWorldTimers.settings.backgroundOpacity = value
-            SamiWorldTimers.ui.updateBackgroundOpacity()
+            SWT.settings.backgroundOpacity = value
+            SWT.ui.updateBackgroundOpacity()
         end,
         min = 0,
         max = 1,
@@ -151,20 +152,20 @@ function SamiWorldTimers.settingsInit()
         type = "checkbox",
         name = "Show Title",
         tooltip = "Show or hide the 'Boss Timers' title text",
-        getFunc = function() return SamiWorldTimers.settings.showTitle end,
+        getFunc = function() return SWT.settings.showTitle end,
         setFunc = function(value) 
-            SamiWorldTimers.settings.showTitle = value
-            SamiWorldTimers.ui.updateTitleVisibility()
+            SWT.settings.showTitle = value
+            SWT.ui.updateTitleVisibility()
         end,
-        default = SamiWorldTimers.defaults.showTitle,
+        default = SWT.defaults.showTitle,
     }
     optionsData[#optionsData + 1] = {
         type = "checkbox",
         name = "Wipe Timers on Zone Change",
         tooltip = "Clear all tracked timers when changing zones",
-        getFunc = function() return SamiWorldTimers.settings.wipeOnZoneChange end,
-        setFunc = function(value) SamiWorldTimers.settings.wipeOnZoneChange = value end,
-        default = SamiWorldTimers.defaults.wipeOnZoneChange,
+        getFunc = function() return SWT.settings.wipeOnZoneChange end,
+        setFunc = function(value) SWT.settings.wipeOnZoneChange = value end,
+        default = SWT.defaults.wipeOnZoneChange,
     }
 
     -- Debug Options
@@ -176,9 +177,9 @@ function SamiWorldTimers.settingsInit()
         type = "checkbox",
         name = "Debug",
         tooltip = "Enable debug output in chat",
-        getFunc = function() return SamiWorldTimers.settings.debug end,
-        setFunc = function(value) SamiWorldTimers.settings.debug = value end,
-        default = SamiWorldTimers.defaults.debug,
+        getFunc = function() return SWT.settings.debug end,
+        setFunc = function(value) SWT.settings.debug = value end,
+        default = SWT.defaults.debug,
     }
 
     -- Guild Information

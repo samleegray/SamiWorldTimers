@@ -1,7 +1,9 @@
-SamiWorldTimers.ui = SamiWorldTimers.ui or {}
+local SWT = SamiWorldTimers
 
-local ui = SamiWorldTimers.ui
-local util = SamiWorldTimers.util
+SWT.ui = SWT.ui or {}
+
+local ui = SWT.ui
+local util = SWT.util
 
 function ui.init()
     if not ui.mainFragment then
@@ -12,8 +14,8 @@ function ui.init()
     HUD_UI_SCENE:AddFragment(ui.mainFragment)
 
     SamiWorldTimersTLC:ClearAnchors()
-    SamiWorldTimersTLC:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, SamiWorldTimers.settings.offsetX,
-        SamiWorldTimers.settings.offsetY)
+    SamiWorldTimersTLC:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, SWT.settings.offsetX,
+        SWT.settings.offsetY)
     
     -- Create background if it doesn't exist
     if not ui.background then
@@ -39,13 +41,13 @@ function ui.init()
     SamiWorldTimersTLCLabel:SetAnchor(TOPLEFT, SamiWorldTimersTLC, TOPLEFT, 8, 20)
     
     -- Set default text color
-    local r, g, b = util.hexToRgb(SamiWorldTimers.settings.defaultTextColour)
+    local r, g, b = util.hexToRgb(SWT.settings.defaultTextColour)
     SamiWorldTimersTLCLabel:SetColor(r, g, b)
     
     -- Set up the background
     local bg = ui.background
-    local r, g, b = util.hexToRgb(SamiWorldTimers.settings.backgroundColor)
-    bg:SetColor(r, g, b, SamiWorldTimers.settings.backgroundOpacity)
+    local r, g, b = util.hexToRgb(SWT.settings.backgroundColor)
+    bg:SetColor(r, g, b, SWT.settings.backgroundOpacity)
     bg:SetHidden(false)
     
     -- Set title visibility
@@ -81,37 +83,37 @@ function ui.setText(text)
     end
 end
 
-function SamiWorldTimers.savePosition()
-    SamiWorldTimers.settings.offsetX = SamiWorldTimersTLC:GetLeft()
-    SamiWorldTimers.settings.offsetY = SamiWorldTimersTLC:GetTop()
+function SWT.savePosition()
+    SWT.settings.offsetX = SamiWorldTimersTLC:GetLeft()
+    SWT.settings.offsetY = SamiWorldTimersTLC:GetTop()
 end
 
 function ui.updateBackgroundColor()
     local bg = ui.background
     if bg then
-        local r, g, b = util.hexToRgb(SamiWorldTimers.settings.backgroundColor)
-        bg:SetColor(r, g, b, SamiWorldTimers.settings.backgroundOpacity)
+        local r, g, b = util.hexToRgb(SWT.settings.backgroundColor)
+        bg:SetColor(r, g, b, SWT.settings.backgroundOpacity)
     end
 end
 
 function ui.updateBackgroundOpacity()
     local bg = ui.background
     if bg then
-        local r, g, b = util.hexToRgb(SamiWorldTimers.settings.backgroundColor)
-        bg:SetColor(r, g, b, SamiWorldTimers.settings.backgroundOpacity)
+        local r, g, b = util.hexToRgb(SWT.settings.backgroundColor)
+        bg:SetColor(r, g, b, SWT.settings.backgroundOpacity)
     end
 end
 
 function ui.updateTextColors()
     -- Refresh the timers to apply any color changes
-    local r, g, b = util.hexToRgb(SamiWorldTimers.settings.defaultTextColour)
+    local r, g, b = util.hexToRgb(SWT.settings.defaultTextColour)
     SamiWorldTimersTLCLabel:SetColor(r, g, b)
-    SamiWorldTimers.updateTimer()
+    SWT.updateTimer()
 end
 
 function ui.updateTitleVisibility()
     local title = ui.title
     if title then
-        title:SetHidden(not SamiWorldTimers.settings.showTitle)
+        title:SetHidden(not SWT.settings.showTitle)
     end
 end

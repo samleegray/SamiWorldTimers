@@ -1,12 +1,14 @@
 SamiWorldTimers = {
     name = "SamiWorldTimers",
-    version = "1.0.1",
+    version = "1.0.2",
     author = "@samihaize",
 }
 
-SamiWorldTimers.settings = {}
+local SWT = SamiWorldTimers
 
-SamiWorldTimers.defaults = {
+SWT.settings = {}
+
+SWT.defaults = {
     offsetX = 100,
     offsetY = 200,
     timeoutDuration = 8,
@@ -22,8 +24,8 @@ SamiWorldTimers.defaults = {
     showTitle = true,
 }
 
-SamiWorldTimers.bossTimes = {}
-SamiWorldTimers.blacklist = {
+SWT.bossTimes = {}
+SWT.blacklist = {
     --Geysers
     "Ruella Many-Claws",
     "Churug of the Abyss",
@@ -46,5 +48,5 @@ SamiWorldTimers.blacklist = {
     "Rrarrvok",
     "Krrazzak"
 }
-SamiWorldTimers.sortedBosses = {}
-SamiWorldTimers.sortedDirty = true
+SWT.sortedBosses = {}
+SWT.sortedDirty = true
