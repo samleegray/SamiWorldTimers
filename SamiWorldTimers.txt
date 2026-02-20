@@ -1,9 +1,10 @@
 ## Title: Sami's World Timers
-## Version: 1.0.0
+## Version: 1.0.1
 ## APIVersion: 101048
-## IsLibrary: false
+## AddOnVersion: 2
+## Author: |cf939dasamihaize|r
 ## SavedVariables: SamiWorldTimersSettings
-## DependsOn: LibAddonMenu-2.0
+## DependsOn: LibAddonMenu-2.0>=39
 
 bindings.xml
 SamiWorldTimers.xml

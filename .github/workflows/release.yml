@@ -45,8 +45,6 @@ jobs:
         run: |
           zip -r SamiWorldTimers.zip \
             bindings.xml \
-            LICENSE.md \
-            README.md \
             SamiWorldTimers.lua \
             SamiWorldTimers.txt \
             SamiWorldTimers.xml \
