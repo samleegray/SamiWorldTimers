@@ -11,6 +11,7 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: release
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -55,6 +56,62 @@ jobs:
             SamiWorldTimersUtil.lua \
             SamiWorldTimers/
           zip -r SamiWorldTimers.zip SamiWorldTimers/
+
+      - name: Extract addon metadata from txt
+        id: addon_meta
+        run: |
+          TITLE=$(grep '^## Title:' SamiWorldTimers.txt | sed 's/^## Title:[[:space:]]*//')
+          DESCRIPTION=$(grep '^## Description:' SamiWorldTimers.txt | sed 's/^## Description:[[:space:]]*//')
+          COMPATIBLE=$(grep '^## APIVersion:' SamiWorldTimers.txt | sed 's/^## APIVersion:[[:space:]]*//' | tr -s ' ' ',' | sed 's/^,*//;s/,*$//')
+
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+          echo "description=$DESCRIPTION" >> "$GITHUB_OUTPUT"
+          echo "compatible=$COMPATIBLE" >> "$GITHUB_OUTPUT"
+
+      - name: Build changelog for ESOUI
+        run: |
+          VERSION=${{ steps.tag_version.outputs.version }}
+          PREV_TAG=$(git tag --sort=-creatordate | grep -v "^v${VERSION}$" | head -n1)
+
+          {
+            echo "Release v${VERSION}"
+            echo
+            if [ -n "$PREV_TAG" ]; then
+              echo "Changes since ${PREV_TAG}:"
+              git log --pretty='- %s (%h)' "${PREV_TAG}"..HEAD
+            else
+              echo "Changes included in this release:"
+              git log --pretty='- %s (%h)' -n 20
+            fi
+          } > esoui_changelog.txt
+
+      - name: Upload release to ESOUI API
+        env:
+          ESOUI_ADDON_ID: ${{ secrets.ESOUI_ADDON_ID }}
+          ESOUI_API_TOKEN: ${{ secrets.ESOUI_API_TOKEN }}
+          ESOUI_API_URL: https://api.esoui.com/addons/update
+        run: |
+          if [ -z "$ESOUI_ADDON_ID" ]; then
+            echo "Missing required secret: ESOUI_ADDON_ID"
+            exit 1
+          fi
+
+          if [ -z "$ESOUI_API_TOKEN" ]; then
+            echo "Missing required secret: ESOUI_API_TOKEN"
+            exit 1
+          fi
+
+          curl --fail-with-body --silent --show-error \
+            -X POST "$ESOUI_API_URL" \
+            -H "x-api-token: $ESOUI_API_TOKEN" \
+            -F "id=$ESOUI_ADDON_ID" \
+            -F "title=${{ steps.addon_meta.outputs.title }}" \
+            -F "version=${{ steps.tag_version.outputs.version }}" \
+            -F "description=${{ steps.addon_meta.outputs.description }}" \
+            -F "changelog=<esoui_changelog.txt" \
+            -F "archive=Yes" \
+            -F "compatible=${{ steps.addon_meta.outputs.compatible }}" \
+            -F "updatefile=@SamiWorldTimers.zip"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
