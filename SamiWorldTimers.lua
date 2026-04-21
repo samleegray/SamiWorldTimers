@@ -1,6 +1,6 @@
 SamiWorldTimers = {
     name = "SamiWorldTimers",
-    version = "1.0.2",
+    version = "1.0.3",
     author = "@samihaize",
 }
 
