@@ -29,7 +29,7 @@ function SWT.settingsInit()
     local panelData = {
         type = "panel",
         name = "Sami's World Timers",
-        author = "@|cf500e2s|r|ceb00e5a|r|ce100e9m|r|cd700edi|r|cce00f0h|r|cc400f4a|r|cba00f8i|r|cb000fbz|r|ca600ffe|r",
+        author = "|cf500e2s|r|ceb00e5a|r|ce100e9m|r|cd700edi|r|cce00f0h|r|cc400f4a|r|cba00f8i|r|cb000fbz|r|ca600ffe|r",
         version = SWT.version,
         website = "https://lethalrejection.com"
     }

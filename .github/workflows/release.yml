@@ -8,6 +8,9 @@ on:
 permissions:
   contents: write
 
+env:
+  ADDON_NAME: SamiWorldTimers
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -23,10 +26,10 @@ jobs:
           echo "version=$TAG_VERSION" >> $GITHUB_OUTPUT
           echo "Tag version: $TAG_VERSION"
 
-      - name: Extract addon version from SamiWorldTimers.lua
+      - name: Extract addon version from lua
         id: addon_version
         run: |
-          ADDON_VERSION=$(grep -oP 'version = "\K[^"]+' SamiWorldTimers.lua)
+          ADDON_VERSION=$(grep -oP 'version = "\K[^"]+' "${{ env.ADDON_NAME }}.lua")
           echo "version=$ADDON_VERSION" >> $GITHUB_OUTPUT
           echo "Addon version: $ADDON_VERSION"
 
@@ -44,25 +47,17 @@ jobs:
 
       - name: Create zip file
         run: |
-          mkdir -p SamiWorldTimers
-          cp bindings.xml \
-            SamiWorldTimers.lua \
-            SamiWorldTimers.txt \
-            SamiWorldTimers.xml \
-            SamiWorldTimersCore.lua \
-            SamiWorldTimersEvents.lua \
-            SamiWorldTimersSettings.lua \
-            SamiWorldTimersUI.lua \
-            SamiWorldTimersUtil.lua \
-            SamiWorldTimers/
-          zip -r SamiWorldTimers.zip SamiWorldTimers/
+          mkdir -p "${{ env.ADDON_NAME }}"
+          find . -maxdepth 1 -type f \( -name "*.lua" -o -name "*.xml" -o -name "*.txt" \) \
+            -exec cp {} "${{ env.ADDON_NAME }}/" \;
+          zip -r "${{ env.ADDON_NAME }}.zip" "${{ env.ADDON_NAME }}/"
 
       - name: Extract addon metadata from txt
         id: addon_meta
         run: |
-          TITLE=$(grep '^## Title:' SamiWorldTimers.txt | sed 's/^## Title:[[:space:]]*//')
-          DESCRIPTION=$(grep '^## Description:' SamiWorldTimers.txt | sed 's/^## Description:[[:space:]]*//')
-          COMPATIBLE=$(grep '^## APIVersion:' SamiWorldTimers.txt | sed 's/^## APIVersion:[[:space:]]*//' | tr -s ' ' ',' | sed 's/^,*//;s/,*$//')
+          TITLE=$(grep '^## Title:' "${{ env.ADDON_NAME }}.txt" | sed 's/^## Title:[[:space:]]*//')
+          DESCRIPTION=$(grep '^## Description:' "${{ env.ADDON_NAME }}.txt" | sed 's/^## Description:[[:space:]]*//')
+          COMPATIBLE=$(grep '^## APIVersion:' "${{ env.ADDON_NAME }}.txt" | sed 's/^## APIVersion:[[:space:]]*//' | tr -s ' ' ',' | sed 's/^,*//;s/,*$//')
 
           echo "title=$TITLE" >> "$GITHUB_OUTPUT"
           echo "description=$DESCRIPTION" >> "$GITHUB_OUTPUT"
@@ -107,16 +102,15 @@ jobs:
             -F "id=$ESOUI_ADDON_ID" \
             -F "title=${{ steps.addon_meta.outputs.title }}" \
             -F "version=${{ steps.tag_version.outputs.version }}" \
-            -F "description=${{ steps.addon_meta.outputs.description }}" \
             -F "changelog=<esoui_changelog.txt" \
             -F "archive=Yes" \
             -F "compatible=${{ steps.addon_meta.outputs.compatible }}" \
-            -F "updatefile=@SamiWorldTimers.zip"
+            -F "updatefile=@${{ env.ADDON_NAME }}.zip"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: SamiWorldTimers.zip
+          files: ${{ env.ADDON_NAME }}.zip
           draft: false
           prerelease: false
         env:
